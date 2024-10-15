@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+//import return type View
 use Illuminate\View\View;
 
 class ProductController extends Controller
