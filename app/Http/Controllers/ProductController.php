@@ -1,16 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-//import models
+
 use App\Models\Product;
+use Illuminate\Http\Request;
 //import return type View
 use Illuminate\View\View;
-//import resource
-use App\Http\Resources\ProductResource;
-//import HTTP request
-use Illuminate\Http\Request;
-//import facade Validator
-use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -20,12 +15,12 @@ class ProductController extends Controller
      * 
      * @return void
      */
-    public function index() 
+    public function index() : View
     {
         //get all products
         $products = Product::latest()->paginate(10);
 
-        return new ProductResource(true,'List Data Product', $products);
+        return View('products.index', compact('products'));
     }
 
     /**
@@ -38,33 +33,10 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * 
-     * @param mixed $request
-     * @return void
      */
     public function store(Request $request)
     {
-        //define validation rules
-        $validator = Validator::make($request->all(), [
-            'image'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'title'     => 'required',
-            'content'   => 'required',
-        ]); 
-
-        //check if vaidation fails
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        //uploud image
-        $image = $request->file('image');
-        $image->storeAs('public/products', $image->hashName());
-
-        //create product
-        $product = Product::create([
-            'image'     => $image->hashName(),
-
-        ]);
+        //
     }
 
     /**
